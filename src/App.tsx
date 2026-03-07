@@ -9,6 +9,7 @@ import { TrendSection } from "@/components/TrendSection";
 import { RandomResult } from "@/components/RandomResult";
 import { SearchHistory } from "@/components/SearchHistory";
 import { NameGenerator } from "@/components/NameGenerator";
+import { AdResponsive, AdRectangle, AdHorizontal } from "@/components/AdBanner";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { names, popularNames } from "@/data/names";
@@ -190,6 +191,13 @@ function App() {
           </div>
         </header>
 
+        {/* Ad banner below header */}
+        <div className="border-b-2 border-border bg-card/30">
+          <div className="max-w-6xl mx-auto px-4 py-2">
+            <AdHorizontal />
+          </div>
+        </div>
+
         {/* Main Content */}
         <main className="max-w-6xl mx-auto px-4 py-6 space-y-6">
           {/* Search and Filters */}
@@ -259,17 +267,38 @@ function App() {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredNames.map((name, index) => (
-                  <div
-                    key={name.id}
-                    id={`name-card-${name.id}`}
-                    className="animate-fade-in"
-                    style={{ animationDelay: `${index * 30}ms` }}
-                  >
-                    <NameCard name={name} onSimilar={handleSimilar} />
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                {/* Main content */}
+                <div className="lg:col-span-3 space-y-4">
+                  {/* Ad between results */}
+                  {filteredNames.length >= 6 && (
+                    <AdResponsive />
+                  )}
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {filteredNames.map((name, index) => (
+                      <div
+                        key={name.id}
+                        id={`name-card-${name.id}`}
+                        className="animate-fade-in"
+                        style={{ animationDelay: `${index * 30}ms` }}
+                      >
+                        <NameCard name={name} onSimilar={handleSimilar} />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                {/* Sidebar with ads */}
+                <aside className="space-y-4">
+                  <AdRectangle />
+                  <AdResponsive />
+                  <div className="bg-card border-2 border-border rounded-lg p-4 pixel-border">
+                    <p className="text-xs text-muted-foreground font-body text-center">
+                      Publicidad
+                    </p>
+                  </div>
+                </aside>
               </div>
             )}
           </section>
@@ -277,6 +306,9 @@ function App() {
 
         {/* Footer */}
         <footer className="border-t-2 border-border mt-12">
+          <div className="max-w-6xl mx-auto px-4 py-4">
+            <AdHorizontal />
+          </div>
           <div className="max-w-6xl mx-auto px-4 py-6 text-center">
             <p className="text-sm text-muted-foreground font-body">
               Hecho con ❤️.
